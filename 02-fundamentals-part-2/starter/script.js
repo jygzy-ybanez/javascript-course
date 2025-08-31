@@ -477,54 +477,224 @@
 // };
 
 //CODING CHALLENGE #3: USER PROFILE SYSTEM
-const user = {
-  firstName: "Jygzy",
-  lastName: "Ybanez",
-  birthYear: 2002,
-  location: "Philippines",
-  interests: ["photography", "travel", "coding"],
-  friends: [
-    { name: "Louren", status: "active" },
-    { name: "Agatha", status: "inactive" },
-    { name: "Han", status: "active" },
-  ],
-  isActive: true,
+// const user = {
+//   firstName: "Jygzy",
+//   lastName: "Ybanez",
+//   birthYear: 2002,
+//   location: "Philippines",
+//   interests: ["photography", "travel", "coding"],
+//   friends: [
+//     { name: "Louren", status: "active" },
+//     { name: "Agatha", status: "inactive" },
+//     { name: "Han", status: "active" },
+//   ],
+//   isActive: true,
 
-  calcAge: function () {
-    const currentYear = new Date().getFullYear();
-    this.age = currentYear - this.birthYear;
-    return this.age;
-  },
+//   calcAge: function () {
+//     const currentYear = new Date().getFullYear();
+//     this.age = currentYear - this.birthYear;
+//     return this.age;
+//   },
 
-  addFriend: function (name, status = "active") {
-    this.friends.push({name, status});
-    return this.friends.length;
-  },
+//   addFriend: function (name, status = "active") {
+//     this.friends.push({name, status});
+//     return this.friends.length;
+//   },
 
-  getActiveFriends: function () {
-    return this.friends.filter(friend => friend.status === "active").length;
-  },
+//   getActiveFriends: function () {
+//     return this.friends.filter(friend => friend.status === "active").length;
+//   },
 
-  toggleStatus: function () {
-    this.isActive = !this.isActive;
-    return this.isActive
-  },
+//   toggleStatus: function () {
+//     this.isActive = !this.isActive;
+//     return this.isActive
+//   },
 
-  getSummary: function () {
-    const age = this.calcAge();
-    return `
-    Name: ${this.firstName} ${this.lastName}
-    Age: ${age}
-    Location: ${this.location}
-    Status: ${this.isActive ? "Online" : "Offline"}
-    Friends: ${this.friends.length} total (${this.getActiveFriends()} active)
-    Interests: ${this.interests.join(", ")}
-`;
-  },
-};
+//   getSummary: function () {
+//     const age = this.calcAge();
+//     return `
+//     Name: ${this.firstName} ${this.lastName}
+//     Age: ${age}
+//     Location: ${this.location}
+//     Status: ${this.isActive ? "Online" : "Offline"}
+//     Friends: ${this.friends.length} total (${this.getActiveFriends()} active)
+//     Interests: ${this.interests.join(", ")}
+// `;
+//   },
+// };
 
-console.log(user.getSummary());
-user.addFriend("Alex", "active");
-user.toggleStatus();
-console.log(`After updates:`);
-console.log(user.getSummary());
+// console.log(user.getSummary());
+// user.addFriend("Alex", "active");
+// user.toggleStatus();
+// console.log(`After updates:`);
+// console.log(user.getSummary());
+
+// const message = document.querySelector(".message");
+// // GETS US THE ENTIRE ELEMENT OBJECT WITH ALL ITS PROPERTIES
+// console.log(message);
+
+// const button = document.querySelector("#btn");
+// console.log(button);  
+
+// const heading = document.querySelector("h1");
+// console.log(heading);
+// // QUERY SELECTOR RETURNS THE FIRST MATCHING ELEMENT
+
+// console.log(message.textContent);
+// console.log(button.id);
+// console.log(heading.textContent);
+
+// // getElementByID
+// const buttonByID = document.getElementById("btn");
+// console.log(buttonByID);
+// console.log(buttonByID === button);
+
+// // querySelectorAll = Multiple Elements
+// const allParagrpahs = document.querySelectorAll("p");
+// console.log(allParagrpahs);
+// console.log(allParagrpahs[0]);
+
+// EXERCISE 1: ELEMENT SELECTION PRACTICE
+// const guessInput = document.querySelector(".guess");
+// console.log(guessInput);
+
+// const buttonQuery = document.querySelector("#btn");
+// const buttonById = document.getElementById("btn");
+// console.log(buttonQuery === buttonById);
+
+// const allSpans = document.querySelectorAll("span");
+// console.log(allSpans);
+
+// const firstSpan = document.querySelector("span");
+// console.log(firstSpan.textContent);
+
+// console.log(document.querySelector(".guess"));
+// console.log(document.querySelector("#btn"));
+// console.log(document.querySelector("div > span"));
+// console.log(document.querySelector("span:last-child"));
+
+// // MODIFYING ELEMENT CONTENT
+
+// const message = document.querySelector(".message");
+// console.log(message.textContent);
+//  message.textContent = 'Hello From JavaScript';
+//  console.log(message.textContent);
+
+//  // innerHTML
+// message.innerHTML = '<strong>Bold text from JS!';
+
+// // innerText
+// console.log(message.innerText);
+
+
+// // INPUT ELEMENT VALUES
+// const input = document.querySelector(".guess");
+
+// console.log(input.value);
+// input.value = "Default text";
+
+// const heading = document.querySelector("h1");
+// heading.style.color = "red";
+// heading.style.backgroundColor = "yellow";
+// heading.style.fontSize = "3rem";
+
+// const button = document.querySelector("#btn");
+// button.style.padding = "20px";
+// button.style.borderRadius = "10px";
+
+// // EXERCISE 2: CONTENT AND STYLE PRACTICE
+// const heading = document.querySelector("h1");
+// const button = document.querySelector("#btn");
+// const input = document.querySelector(".guess");
+// const message = document.querySelector(".message");
+// const scoreValue = document.querySelector(".score-value");
+
+// heading.textContent = "Jygzy Ybanez";
+
+// button.style.backgroundColor = "blue";
+// button.style.color = "red";
+// button.style.padding = "10px 20px";
+// button.style.border = "none";
+// button.style.borderRadius = "5px";
+
+// input.setAttribute("placeholder", "Listening to Stray Kids...");
+
+// message.innerHTML = "This is <strong>bold</strong> text from JavaScript!";
+
+// scoreValue.style.fontSize = "2rem";
+// scoreValue.style.color = "green";
+// scoreValue.style.fontWeight = "bold";
+
+
+// // EVENT LISTENERS - USER INTERACTIONS
+
+// button.addEventListener('click', function(){
+//     console.log('Button was clicked!');
+//     message.textContent = "You clicked the button";
+//     message.style.color = "green";
+// })
+
+// let clickCount = 0;
+
+// button.addEventListener("click", function () {
+//   clickCount++;
+//   button.textContent = `Clicked ${clickCount} times`;
+//   button.style.backgroundColor = `hsl(${clickCount * 30}, 70%, 50%)`;
+// });
+
+// // INPUT EVENTS
+// const display = document.querySelector(".message");
+
+// input.addEventListener('input', function(){
+//     const userText = input.value;
+//     display.textContent = `You typed ${userText}`
+//     display.style.fontSize = `${userText.length + 10}px`;
+// });
+
+// // KEYBOARD EVENTS - RESPOND TO SPECIFIC KEY
+// input.addEventListener("keydown", function(event) {
+//   console.log(`Key pressed ${event.key}`);
+
+//   if (event.key === 'Enter') {
+//     display.textContent = `You pressed Enter! Text was ${input.value}`;
+//     input.value = "";
+//   }
+// });
+
+//EXERCISE 3: EVENT LISTENER PRACTICE
+// const heading = document.querySelector("h1");
+// const input = document.querySelector(".guess");
+// const button = document.querySelector("#btn");
+// const message = document.querySelector(".message");
+
+// heading.addEventListener("click", function () {
+//   heading.style.color =
+//     heading.style.color === "purple" ? "black" : "purple";
+// });
+
+// input.addEventListener("input", function () {
+//   const count = input.value.length;
+//   message.textContent = `Character count: ${count}`;
+// });
+
+// document.addEventListener("keydown", function (event) {
+//   if (event.code === " ") {
+//     message.textContent = "Spacebar pressed!";
+//   }
+// });
+
+// button.addEventListener("mouseover", function () {
+//   button.textContent = "Hovering!";
+// });
+// button.addEventListener("mouseout", function () {
+//   button.textContent = "Click Me!";
+// });
+
+// heading.addEventListener("dblclick", function () {
+//   heading.textContent = "Double-clicked!";
+//   heading.style.backgroundColor = "lightblue";
+// });
+
+
+
+
