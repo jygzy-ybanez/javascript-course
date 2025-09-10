@@ -39,6 +39,18 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
   const guess = Number(document.querySelector(`.guess`).value);
   console.log(`Players guessed: `, guess);
 
+  // CHECK IF OUR GUESS INPUT VALUE IS EMPTY
+  if (!guess) {
+    document.querySelector(`.message`).textContent = 'Please input a number! 🥹';
+    return;
+  }
+
+  if (guess < 1 || guess > 20) {
+    document.querySelector(`.message`).textContent =
+      'Number must be between 1 and 20! 😠';
+    return;
+  }
+
   if (guess === secretNumber) {
     console.log(`Your guess is correct!`);
     document.querySelector(`.message`).textContent = `Correct Number 🥳 `;
@@ -50,6 +62,7 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
     document.querySelector(`.message`).textContent = 'You have won! 🦦';
     document.querySelector(`.guess`).disabled = true;
     document.querySelector(`.check`).disabled = true;
+    document.body.style.backgroundColor = `green`;
   } else if (guess > secretNumber) {
     console.log(`Too high!`);
     document.querySelector(`.message`).textContent = `Too high! 🤣 `;
@@ -59,6 +72,9 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
       document.querySelector(
         `.message`
       ).textContent = `You have lost, press again! 🤣 `;
+      document.body.style.backgroundColor = `maroon`;
+      document.querySelector(`.message`).textContent = 'Game Over 🤣';
+      document.querySelector(`.guess`).value = ``;
       document.querySelector(`number`).textContent = secretNumber;
       document.querySelector(`.guess`).disabled = true;
       document.querySelector(`.check`).disabled = true;
@@ -71,6 +87,9 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
       document.querySelector(
         `.message`
       ).textContent = `You have lost, press again! 🤣 `;
+      document.body.style.backgroundColor = `maroon`;
+      document.querySelector(`.message`).textContent = 'Game Over 🤣';
+      document.querySelector(`.guess`).value = ``;
       document.querySelector(`number`).textContent = secretNumber;
       document.querySelector(`.guess`).disabled = true;
       document.querySelector(`.check`).disabled = true;
@@ -92,4 +111,5 @@ document.querySelector(`.again`).addEventListener(`click`, function () {
   document.querySelector(`.guess`).value = ``;
   document.querySelector(`.guess`).disabled = false;
   document.querySelector(`.check`).disabled = false;
+  document.body.style.backgroundColor = ``;
 });
