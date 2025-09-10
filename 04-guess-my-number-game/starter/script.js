@@ -41,12 +41,55 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
 
   if (guess === secretNumber) {
     console.log(`Your guess is correct!`);
-    document.querySelector(`.message`).textContent = `Correct Number 🥳 : `;
+    document.querySelector(`.message`).textContent = `Correct Number 🥳 `;
     document.querySelector(`.number`).textContent = secretNumber;
+    if (score > highscore) {
+      highscore = score;
+      document.querySelector(`.highscore`).textContent = highscore;
+    }
+    document.querySelector(`.message`).textContent = 'You have won! 🦦';
+    document.querySelector(`.guess`).disabled = true;
+    document.querySelector(`.check`).disabled = true;
   } else if (guess > secretNumber) {
     console.log(`Too high!`);
     document.querySelector(`.message`).textContent = `Too high! 🤣 `;
+    score--;
+    document.querySelector(`.score`).textContent = score;
+    if (score < 1) {
+      document.querySelector(
+        `.message`
+      ).textContent = `You have lost, press again! 🤣 `;
+      document.querySelector(`number`).textContent = secretNumber;
+      document.querySelector(`.guess`).disabled = true;
+      document.querySelector(`.check`).disabled = true;
+    }
   } else if (guess < secretNumber) {
     document.querySelector(`.message`).textContent = `Too low! 😖`;
+    score--;
+    document.querySelector(`.score`).textContent = score;
+    if (score < 1) {
+      document.querySelector(
+        `.message`
+      ).textContent = `You have lost, press again! 🤣 `;
+      document.querySelector(`number`).textContent = secretNumber;
+      document.querySelector(`.guess`).disabled = true;
+      document.querySelector(`.check`).disabled = true;
+    }
   }
+});
+
+document.querySelector(`.again`).addEventListener(`click`, function () {
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+  console.log('New Secret Number is: ', secretNumber);
+  // RESTART THE MESSAGE DISPLAY
+  document.querySelector(`.message`).textContent = `Start guessing`;
+  // RESTART QUESTION MARK OR THE REVEAL SECRET NUMBER
+  document.querySelector(`.number`).textContent = `?`;
+  // UPDATE SCORE IN THE UI
+  document.querySelector(`.score`).textContent = score;
+  // RESTART GUESS INPUT VALUE
+  document.querySelector(`.guess`).value = ``;
+  document.querySelector(`.guess`).disabled = false;
+  document.querySelector(`.check`).disabled = false;
 });
