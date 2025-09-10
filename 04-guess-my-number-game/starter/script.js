@@ -86,7 +86,7 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
     if (score < 1) {
       document.querySelector(
         `.message`
-      ).textContent = `You have lost, press again! 🤣 `;
+      ).textContent = `You have lost, press again!! 🤣 `;
       document.body.style.backgroundColor = `maroon`;
       document.querySelector(`.message`).textContent = 'Game Over 🤣';
       document.querySelector(`.guess`).value = ``;
