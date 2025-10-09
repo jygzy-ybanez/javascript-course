@@ -95,6 +95,22 @@ console.log('Run clicks:', run1.clicks);
 console.log('Cycling clicks:', cycling1.clicks);
 
 console.log('=== TESTING GEOLOCATION API ===');
+
+// DOM ELEMENTS
+// main form element
+const form = document.querySelector('.form');
+// container workout
+const containerWorkouts = document.querySelector('.workouts');
+// input type
+const inputType = document.querySelector('.form__input--type');
+// input distance
+const inputDistance = document.querySelector('.form__input--distance');
+// input duration
+const inputDuration = document.querySelector('.form__input--duration');
+// input cadence
+const inputCadence = document.querySelector('.form__input--cadence');
+// input elevation
+const inputElevation = document.querySelector('.form__input--elevation');
 class App {
   #map;
   #mapZoomLevel = 13;
@@ -104,6 +120,11 @@ class App {
   constructor() {
     console.log('App starting');
     this._getPosition();
+
+    // attach event handler to form submission
+    form.addEventListener('submit', this._newWorkout.bind(this));
+    // attach event handler for workout type change
+    inputType.addEventListener('change', this._toggleElevationFiel);
   }
 
   _getPosition() {
@@ -197,15 +218,158 @@ class App {
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
-    // extract coordinates when we click a part of the map
-    const { lat, lng } = mapE.latlng;
-    console.log(`Map clicked at: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+    form.classList.remove('hidden');
+    inputDistance.focus();
+  }
 
-    // create the market na blue
-    L.marker([lat, lng])
+  _toggleElevationFiel() {
+    // turn on or display the elevation
+    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+    // turns off or hide the input cadence
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
+
+  _hideFOrm() {
+    inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+        ' ';
+
+    // add hiding animation
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => (form.style.display = 'grid'), 1000);
+  }
+
+  _newWorkout(e) {
+    // helper function
+    // validate input that they are actual numbers that make sense
+    const validInputs = (...inputs) =>
+      inputs.every(inp => Number.isFinite(inp));
+    // validate numbers are positive
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
+    // prevent the default form submission behavior
+    e.preventDefault();
+
+    // store data or extract data
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    console.log(`Creating ${type} workout:`, { distance, duration, lat, lng });
+
+    //handle running working
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+
+      // validate all input element are finite, positive, working
+      if (
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      )
+        return alert('Inputs haven to be positive numbers!!');
+
+      // create the running object with map coordinates and form data
+      workout = new Running([lat, lng], distance, duration, cadence);
+    }
+
+    // cycling workout creation
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+
+      // validate all input element are finite, positive, working
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      )
+        return alert('Inputs haven to be positive numbers!!');
+
+      // create the running object with map coordinates and form data
+      workout = new Cycling([lat, lng], distance, duration, elevation);
+    }
+
+    console.log('workout object created:', workout);
+
+    this.#workouts.push(workout);
+
+    this._renderWorkoutMarker(workout);
+
+    this._renderWorkout(workout);
+
+    this._hideFOrm();
+
+    console.log('Workout creation complete!');
+  }
+
+  _renderWorkout(workout) {
+    let html = `
+    <li class="workout workout--${workout.type}" data-id="${workout.id}">
+      <h2 class="workout__title">${workout.description}</h2>
+      <div class="workout__details">
+        <span class="workout__icon">${
+          workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
+        }</span>
+        <span class="workout__value">${workout.distance}</span>
+        <span class="workout__unit">km</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">⏱</span>
+        <span class="workout__value">${workout.duration}</span>
+        <span class="workout__unit">min</span>
+      </div>
+  `;
+
+    if (workout.type === 'running')
+      html += `
+      <div class="workout__details">
+        <span class="workout__icon">⚡️</span>
+        <span class="workout__value">${workout.pace.toFixed(1)}</span>
+        <span class="workout__unit">min/km</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">🦶🏼</span>
+        <span class="workout__value">${workout.cadence}</span>
+        <span class="workout__unit">spm</span>
+      </div>
+    </li>
+    `;
+
+    if (workout.type === 'cycling')
+      html += `
+      <div class="workout__details">
+        <span class="workout__icon">⚡️</span>
+        <span class="workout__value">${workout.speed.toFixed(1)}</span>
+        <span class="workout__unit">km/h</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">⛰</span>
+        <span class="workout__value">${workout.elevationGain}</span>
+        <span class="workout__unit">m</span>
+      </div>
+    </li>
+    `;
+
+    form.insertAdjacentHTML('afterend', html);
+  }
+
+  _renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
-        `Workout location<br>Lat: ${lat.toFixed(4)}, ${lng.toFixed(4)}`
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: `${workout.type}-popup`,
+        })
+      )
+      .setPopupContent(
+        `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
       )
       .openPopup();
   }
